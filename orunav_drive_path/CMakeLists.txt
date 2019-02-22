@@ -12,6 +12,8 @@ find_package(catkin REQUIRED COMPONENTS
   orunav_generic
   orunav_geometry
   orunav_msgs
+  nav_msgs
+  orunav_constraint_extract
   roscpp
   std_msgs
 )
@@ -148,6 +150,13 @@ target_link_libraries(orunav_drive_path_node
 add_executable(orunav_drive_two_path_node src/orunav_drive_two_path_node.cpp)
 add_dependencies(orunav_drive_two_path_node ${catkin_EXPORTED_TARGETS})
 target_link_libraries(orunav_drive_two_path_node
+   ${catkin_LIBRARIES}
+   -lboost_program_options
+ )
+
+add_executable(orunav_drive_constraints src/orunav_drive_constraints.cpp)
+add_dependencies(orunav_drive_constraints ${catkin_EXPORTED_TARGETS})
+target_link_libraries(orunav_drive_constraints
    ${catkin_LIBRARIES}
    -lboost_program_options
  )

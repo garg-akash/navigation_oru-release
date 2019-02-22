@@ -51,7 +51,9 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>orunav_conversions</build_depend>
   <build_depend>orunav_generic</build_depend>
-<build_depend>orunav_geometry</build_depend>
+  <build_depend>orunav_geometry</build_depend>
+  <build_depend>orunav_constraint_extract</build_depend>
+  <build_depend>nav_msgs</build_depend>
   <build_depend>orunav_msgs</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>std_msgs</build_depend>
@@ -59,13 +61,17 @@
   <build_depend>boost</build_depend>
   <build_export_depend>orunav_conversions</build_export_depend>
   <build_export_depend>orunav_generic</build_export_depend>
-<build_export_depend>orunav_geometry</build_export_depend>
+  <build_export_depend>orunav_geometry</build_export_depend>
+  <build_export_depend>orunav_constraint_extract</build_export_depend>
+  <build_export_depend>nav_msgs</build_export_depend>
   <build_export_depend>orunav_msgs</build_export_depend>
   <build_export_depend>roscpp</build_export_depend>
   <build_export_depend>std_msgs</build_export_depend>
   <exec_depend>orunav_conversions</exec_depend>
   <exec_depend>orunav_generic</exec_depend>
   <exec_depend>orunav_msgs</exec_depend>
+<exec_depend>orunav_constraint_extract</exec_depend>
+<exec_depend>nav_msgs</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>std_msgs</exec_depend>
   <build_export_depend>eigen</build_export_depend>
