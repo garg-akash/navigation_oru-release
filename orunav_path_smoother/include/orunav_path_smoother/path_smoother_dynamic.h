@@ -541,7 +541,7 @@ class PathSmootherDynamic : public PathSmootherInterface
 	path = path_orig;
       }
 
-      std::cout << "Used dt : " << dt << std::endl;
+      std::cout << "--------- Estimated delta T : " << dt << " -----------" << std::endl;
 
       //orunav_generic::removeThNormalization(path);
       orunav_generic::Trajectory traj = orunav_generic::convertPathToTrajectoryWithoutModel(path, dt);
@@ -549,6 +549,7 @@ class PathSmootherDynamic : public PathSmootherInterface
       if (orunav_generic::validPath(traj, M_PI))
         std::cerr << "Non-normalized path(!) - should never happen" << std::endl;
       orunav_generic::removeThNormalization(traj);
+
       assert(orunav_generic::validPath(traj, M_PI));
       
       double start_time = 0.0;
@@ -591,6 +592,10 @@ class PathSmootherDynamic : public PathSmootherInterface
       // Run the iterative approach
       // Keep the start and goal fixed (as previous) but divide the section to chunks and optimize over the cunks. The start of the next chunk is located in the previous chunk.
       SplitIndex::Params si_params;
+      std::cout<<"[Akash Stuff]...................si max points"<<si_params.max_nb_points<<std::endl;
+      std::cout<<"[Akash Stuff]...................si discard points"<<si_params.nb_points_discard<<std::endl;
+      std::cout<<"[Akash Stuff]...................smooth param max points"<<params.incr_max_nb_points<<std::endl;
+      std::cout<<"[Akash Stuff]...................smooth param discard points"<<params.incr_nb_points_discard<<std::endl;
       si_params.max_nb_points =  params.incr_max_nb_points;
       si_params.nb_points_discard = params.incr_nb_points_discard;
       int nb_points_discard;
@@ -598,7 +603,9 @@ class PathSmootherDynamic : public PathSmootherInterface
       SplitIndex si(si_params, traj);
 
       std::vector<constraint_extract::PolygonConstraintsVec> constraints_vec = si.getConstraintsVec(constraints);
-
+      std::cout<<"[Akash Stuff]...................si max points"<<si_params.max_nb_points<<std::endl;
+      std::cout<<"[Akash Stuff]...................si discard points"<<si_params.nb_points_discard<<std::endl;
+      std::cout<<"[Akash Stuff]...................si size"<<si.size()<<std::endl;
       for (int i = 0; i < si.size(); i++) { 
 	orunav_generic::Trajectory t = si.getTrajectory(i);
 	stop_time = dt * t.sizeTrajectory()-1;

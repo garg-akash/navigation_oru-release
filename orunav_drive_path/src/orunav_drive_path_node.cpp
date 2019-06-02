@@ -44,7 +44,7 @@ int main(int argc, char **argv)
   int robot_id_;
 	ros::init(argc, argv, "drive_path_node");
   ros::NodeHandle nh_;
-  nh_.param<int>("robot_id", robot_id_, 1);
+  nh_.param<int>("robot_id", robot_id_, 2);
   //ros::Subscriber control_report_sub_;
   	string path_file_name;
   		po::options_description desc("Allowed options");
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
     cout << "First pose : " << loaded_path.getPose2d(0) << endl;
 
-    boost::shared_ptr<orunav_msgs::ControllerReport const> msg;
+    /*boost::shared_ptr<orunav_msgs::ControllerReport const> msg;
     orunav_msgs::ControllerReport cr;
 
     msg  = ros::topic::waitForMessage<orunav_msgs::ControllerReport>(orunav_generic::getRobotTopicName(robot_id_, "/controller/reports"), nh_);
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 
     cout << "First pose (after offset transformation) : " << loaded_path.getPose2d(0) << endl;
     cout << "Second pose (after offset transformation) : " << loaded_path.getPose2d(1) << endl;
-    orunav_generic::savePathTextFile(loaded_path,"path_off.txt");
+    orunav_generic::savePathTextFile(loaded_path,"path_off.txt");*/
         
     //control_report_sub_ = nh_.subscribe<orunav_msgs::ControllerReport>(orunav_generic::getRobotTopicName(robot_id_, "/controller/reports"), 10,drive_pathCB);
   		

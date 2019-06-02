@@ -57,7 +57,7 @@ int main(int argc, char **argv)
     cout << "First pose file 1: " << loaded_path_1.getPose2d(0) << endl;
     cout << "First pose file 2: " << loaded_path_2.getPose2d(0) << endl;
 
-    boost::shared_ptr<orunav_msgs::ControllerReport const> msg, msg_2;
+    /*boost::shared_ptr<orunav_msgs::ControllerReport const> msg, msg_2;
     orunav_msgs::ControllerReport cr, cr_2;
 
     msg  = ros::topic::waitForMessage<orunav_msgs::ControllerReport>(orunav_generic::getRobotTopicName(robot_id_1, "/controller/reports"), nh_);
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 
     cout << "First pose (after offset transformation) 2 : " << loaded_path_2.getPose2d(0) << endl;
     cout << "Second pose (after offset transformation) 2 : " << loaded_path_2.getPose2d(1) << endl;
-    orunav_generic::savePathTextFile(loaded_path_2,"path_2_off.txt");
+    orunav_generic::savePathTextFile(loaded_path_2,"path_2_off.txt");*/
 
   	orunav_msgs::Task task, task_2;
     task.target.start = orunav_conversions::createPoseSteeringMsgFromState2d(loaded_path_1.getState2d(0));

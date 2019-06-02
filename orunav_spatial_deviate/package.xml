@@ -1,12 +1,9 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>orunav_drive_path</name>
+  <name>orunav_spatial_deviate</name>
   <version>0.0.0</version>
-  <description>The orunav_drive_path package</description>
+  <description>The orunav_spatial_deviate package</description>
 
-  <!-- One maintainer tag required, multiple allowed, one person per tag -->
-  <!-- Example:  -->
-  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
   <maintainer email="akash_2k14ec019@dtu.ac.in">akash</maintainer>
 
 
@@ -19,7 +16,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/orunav_drive_path</url> -->
+  <!-- <url type="website">http://wiki.ros.org/orunav_spatial_deviate</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -49,41 +46,53 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
   <build_depend>orunav_conversions</build_depend>
   <build_depend>orunav_generic</build_depend>
   <build_depend>orunav_geometry</build_depend>
   <build_depend>orunav_constraint_extract</build_depend>
-  <build_depend>orunav_trajectory_processor</build_depend>
   <build_depend>nav_msgs</build_depend>
   <build_depend>orunav_msgs</build_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>std_msgs</build_depend>
+  <build_depend>orunav_trajectory_processor</build_depend>
+
   <build_depend>eigen</build_depend>
   <build_depend>boost</build_depend>
+  <build_depend>casadi</build_depend>
+
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
   <build_export_depend>orunav_conversions</build_export_depend>
-  <build_export_depend>orunav_trajectory_processor</build_export_depend>
   <build_export_depend>orunav_generic</build_export_depend>
   <build_export_depend>orunav_geometry</build_export_depend>
   <build_export_depend>orunav_constraint_extract</build_export_depend>
   <build_export_depend>nav_msgs</build_export_depend>
   <build_export_depend>orunav_msgs</build_export_depend>
-  <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>std_msgs</build_export_depend>
-  <exec_depend>orunav_conversions</exec_depend>
-  <exec_depend>orunav_trajectory_processor</exec_depend>
-  <exec_depend>orunav_generic</exec_depend>
-  <exec_depend>orunav_msgs</exec_depend>
-<exec_depend>orunav_constraint_extract</exec_depend>
-<exec_depend>nav_msgs</exec_depend>
-  <exec_depend>roscpp</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
+  <build_export_depend>orunav_trajectory_processor</build_export_depend>
+
   <build_export_depend>eigen</build_export_depend>
   <build_export_depend>boost</build_export_depend>
+  <build_export_depend>casadi</build_export_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>orunav_conversions</exec_depend>
+  <exec_depend>orunav_generic</exec_depend>
+  <exec_depend>orunav_geometry</exec_depend>
+  <exec_depend>orunav_msgs</exec_depend>
+  <exec_depend>orunav_trajectory_processor</exec_depend>
+
+  <exec_depend>orunav_constraint_extract</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>eigen</exec_depend>
+  <exec_depend>boost</exec_depend>
+  <exec_depend>casadi</exec_depend>
+
 
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->
-
+	<cpp cflags="-I${prefix}/include" lflags="-L${prefix}/lib -Wl,-rpath,${prefix}/lib -lorunav_spatial_deviate"/>
   </export>
 </package>

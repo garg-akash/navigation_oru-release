@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <launch>
 
-  <include file="$(find cititruck_gazebo)/launch/cititrucks_empty.launch"/>
-  <include file="$(find gazebo_worlds_oru)/launch/empty_map_server.launch"/>
+  <!--include file="$(find cititruck_gazebo)/launch/cititrucks_empty.launch"/>
+  <include file="$(find gazebo_worlds_oru)/launch/empty_map_server.launch"/-->
+  <include file="$(find cititruck_gazebo)/launch/cititrucks_robot_lab.launch"/>
+  <include file="$(find gazebo_worlds_oru)/launch/robot_lab_map_server.launch"/>
   <rosparam command="load" file="$(find orunav_params)/config/global.cfg"/>
   <rosparam command="load" file="$(find orunav_params)/config/citi1_simulation.cfg" />
   <rosparam command="load" file="$(find orunav_params)/config/citi2_simulation.cfg" />

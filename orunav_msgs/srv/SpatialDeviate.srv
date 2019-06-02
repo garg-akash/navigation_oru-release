@@ -1,0 +1,5 @@
+orunav_msgs/Path path1
+orunav_msgs/Path path2
+---
+orunav_msgs/Path sptl_path1
+orunav_msgs/Path sptl_path2

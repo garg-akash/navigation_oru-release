@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(orunav_drive_path)
+project(orunav_spatial_deviate)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_compile_options(-std=c++11)
@@ -8,32 +8,20 @@ add_compile_options(-std=c++11)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  orunav_conversions
-  orunav_generic
-  orunav_geometry
-  orunav_msgs
-  nav_msgs
-  orunav_constraint_extract
-  orunav_trajectory_processor
   roscpp
   std_msgs
+  nav_msgs
+  orunav_msgs
+  orunav_generic
+  orunav_conversions
+  orunav_geometry
+  orunav_constraint_extract
+  orunav_trajectory_processor
 )
 
-find_package(Boost REQUIRED COMPONENTS system thread program_options)
-
-find_package(Eigen3)
-if(NOT EIGEN3_FOUND)
-  # Fallback to cmake_modules
-  find_package(cmake_modules REQUIRED)
-  find_package(Eigen REQUIRED)
-  set(EIGEN3_INCLUDE_DIRS ${EIGEN_INCLUDE_DIRS})
-else()
-  set(EIGEN3_INCLUDE_DIRS ${EIGEN3_INCLUDE_DIR})
-endif()
-
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
+find_package(Boost REQUIRED COMPONENTS system)
+find_package(casadi REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -50,10 +38,10 @@ endif()
 ##   your messages/services/actions (e.g. std_msgs, actionlib_msgs, ...).
 ## * In the file package.xml:
 ##   * add a build_depend tag for "message_generation"
-##   * add a build_depend and a run_depend tag for each package in MSG_DEP_SET
+##   * add a build_depend and a exec_depend tag for each package in MSG_DEP_SET
 ##   * If MSG_DEP_SET isn't empty the following dependency has been pulled in
 ##     but can be declared for certainty nonetheless:
-##     * add a run_depend tag for "message_runtime"
+##     * add a exec_depend tag for "message_runtime"
 ## * In this file (CMakeLists.txt):
 ##   * add "message_generation" and every package in MSG_DEP_SET to
 ##     find_package(catkin REQUIRED COMPONENTS ...)
@@ -88,7 +76,7 @@ endif()
 ## Generate added messages and services with any dependencies listed here
 # generate_messages(
 #   DEPENDENCIES
-#   orunav_msgs#   std_msgs
+#   std_msgs
 # )
 
 ################################################
@@ -98,7 +86,7 @@ endif()
 ## To declare and build dynamic reconfigure parameters within this
 ## package, follow these steps:
 ## * In the file package.xml:
-##   * add a build_depend and a run_depend tag for "dynamic_reconfigure"
+##   * add a build_depend and a exec_depend tag for "dynamic_reconfigure"
 ## * In this file (CMakeLists.txt):
 ##   * add "dynamic_reconfigure" to
 ##     find_package(catkin REQUIRED COMPONENTS ...)
@@ -121,10 +109,10 @@ endif()
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES orunav_drive_path
-#  CATKIN_DEPENDS orunav_conversions orunav_generic orunav_msgs roscpp std_msgs
-#  DEPENDS system_lib
+  INCLUDE_DIRS include ${Boost_INCLUDE_DIRS} 
+  LIBRARIES ${PROJECT_NAME} ${Boost_LIBRARIES}
+  CATKIN_DEPENDS roscpp std_msgs nav_msgs orunav_msgs orunav_generic orunav_conversions orunav_geometry orunav_constraint_extract
+  DEPENDS Boost
 )
 
 ###########
@@ -138,40 +126,58 @@ include_directories(
   include
   ${catkin_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
-  ${EIGEN3_INCLUDE_DIRS}
 )
 
-add_executable(orunav_drive_path_node src/orunav_drive_path_node.cpp)
-add_dependencies(orunav_drive_path_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(orunav_drive_path_node
+add_executable(spatial_deviate_server src/spatial_deviate_server.cpp)
+add_dependencies(spatial_deviate_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(spatial_deviate_server
    ${catkin_LIBRARIES}
    -lboost_program_options
+   casadi
  )
 
-add_executable(orunav_drive_two_path_node src/orunav_drive_two_path_node.cpp)
-add_dependencies(orunav_drive_two_path_node ${catkin_EXPORTED_TARGETS})
-target_link_libraries(orunav_drive_two_path_node
+add_executable(spatial_deviate_client src/spatial_deviate_client.cpp)
+add_dependencies(spatial_deviate_client ${catkin_EXPORTED_TARGETS})
+target_link_libraries(spatial_deviate_client
+   ${catkin_LIBRARIES}
+ )
+
+add_executable(get_best_path_server src/get_best_path_server.cpp)
+add_dependencies(get_best_path_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(get_best_path_server
    ${catkin_LIBRARIES}
    -lboost_program_options
+   casadi
  )
 
-add_executable(orunav_start_at_file src/orunav_start_at_file.cpp)
-add_dependencies(orunav_start_at_file ${catkin_EXPORTED_TARGETS})
-target_link_libraries(orunav_start_at_file
+#add_executable(get_best_path_server_2 src/get_best_path_server_2.cpp)
+#add_dependencies(get_best_path_server_2 ${catkin_EXPORTED_TARGETS})
+#target_link_libraries(get_best_path_server_2
+#   ${catkin_LIBRARIES}
+#   -lboost_program_options
+#   casadi
+# )
+
+add_executable(get_best_path_client src/get_best_path_client.cpp)
+add_dependencies(get_best_path_client ${catkin_EXPORTED_TARGETS})
+target_link_libraries(get_best_path_client
    ${catkin_LIBRARIES}
-   -lboost_program_options
  )
 
-add_executable(orunav_drive_constraints src/orunav_drive_constraints.cpp)
-add_dependencies(orunav_drive_constraints ${catkin_EXPORTED_TARGETS})
-target_link_libraries(orunav_drive_constraints
+add_executable(get_task_from_db_server src/get_task_from_db_server.cpp)
+add_dependencies(get_task_from_db_server ${catkin_EXPORTED_TARGETS})
+target_link_libraries(get_task_from_db_server
    ${catkin_LIBRARIES}
-   -lboost_program_options
  )
 
+add_executable(pub_goal src/pub_goal.cpp)
+add_dependencies(pub_goal ${catkin_EXPORTED_TARGETS})
+target_link_libraries(pub_goal
+   ${catkin_LIBRARIES}
+ )
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/orunav_drive_path.cpp
+#   src/${PROJECT_NAME}/orunav_spatial_deviate.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -182,7 +188,7 @@ target_link_libraries(orunav_drive_constraints
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/orunav_drive_path_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/orunav_spatial_deviate_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -214,7 +220,7 @@ target_link_libraries(orunav_drive_constraints
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
+# install(TARGETS orunav_spatial_deviate spatial_deviate_server
 #   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -226,7 +232,9 @@ target_link_libraries(orunav_drive_constraints
 #   FILES_MATCHING PATTERN "*.h"
 #   PATTERN ".svn" EXCLUDE
 # )
-
+#install(DIRECTORY
+#  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+#  )
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 # install(FILES
 #   # myfile1
@@ -239,7 +247,7 @@ target_link_libraries(orunav_drive_constraints
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_orunav_drive_path.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_orunav_spatial_deviate.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

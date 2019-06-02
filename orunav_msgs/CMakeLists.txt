@@ -88,6 +88,9 @@ add_service_files(
   SetPenetrationRate.srv
   RePlan.srv
   Abort.srv
+  GetTaskFromDB.srv
+  GetBestPath.srv
+  SpatialDeviate.srv
 )
 
 ## Generate actions in the 'action' folder

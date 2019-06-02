@@ -249,7 +249,7 @@ int main(int argc, char **argv)
   nh.param("visualize_only_invalid", visualize_only_invalid, false);
   nh.param("skip_overlap", lookup_params.skip_overlap, false);
   nh.param("resolution", lookup_params.resolution, 0.1);
-  nh.param("debug", debug, false);
+  nh.param("debug", debug, true);
   
   if (visualize)
     {
