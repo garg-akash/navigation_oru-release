@@ -1,28 +1,3 @@
-// #include <ros/ros.h>
-// #include <geometry_msgs/PoseStamped.h>
-
-// int main(int argc, char **argv)
-// {
-//   ros::init(argc, argv, "goalPub");
-//   ros::NodeHandle n;
-//   ros::Publisher goal_pub = n.advertise<geometry_msgs::PoseStamped>("/goal", 1000);
-//   ros::Rate loop_rate(10);
-//   while (ros::ok()) {
-//   	geometry_msgs::PoseStamped ps;
-//   	ps.pose.position.x =;
-//   	ps.pose.position.y =;
-//   	ps.pose.position.z = 0;
-//   	ps.orientation = tf::createQuaternionMsgFromYaw();
-//   	if(goal_pub.getNumSubscribers() > 0) {
-//   	  goal_pub.publish(ps);
-//   	  break;	
-//   	}
-
-//     loop_rate.sleep();
-//   }
-//   return 0;
-// }
-
 #include "ros/ros.h"
 
 #include <geometry_msgs/PoseStamped.h>
@@ -45,7 +20,7 @@ using namespace std;
 int main(int argc, char **argv)
 {
   int robot_id_1, robot_id_2;
-  ros::init(argc, argv, "SettingStartPose");
+  ros::init(argc, argv, "PublishingGoalPose");
   ros::NodeHandle nh_;
   nh_.param<int>("robot_id1", robot_id_1, 1);
   nh_.param<int>("robot_id2", robot_id_2, 2);
@@ -78,24 +53,34 @@ int main(int argc, char **argv)
     cout << "Goal pose file 1: " << loaded_path_1.getPose2d(loaded_path_1.sizePath()-1) << endl;
     cout << "Goal pose file 2: " << loaded_path_2.getPose2d(loaded_path_2.sizePath()-1) << endl;
 
+  ros::Rate loop_rate(100);
+  bool latchOn = 0;
   geometry_msgs::PoseStamped p1, p2;
   p1.pose = orunav_conversions::createMsgFromPose2d(loaded_path_1.getPose2d(loaded_path_1.sizePath()-1));
-  ros::Publisher pub_1 = nh_.advertise<geometry_msgs::PoseStamped>(orunav_generic::getRobotTopicName(robot_id_1, "/goal"), 1);
-  //pub_1.publish(p1);
+  ros::Publisher pub_1 = nh_.advertise<geometry_msgs::PoseStamped>(orunav_generic::getRobotTopicName(robot_id_1, "/goal"), 1, latchOn);
   
   p2.pose = orunav_conversions::createMsgFromPose2d(loaded_path_2.getPose2d(loaded_path_2.sizePath()-1));
-  ros::Publisher pub_2 = nh_.advertise<geometry_msgs::PoseStamped>(orunav_generic::getRobotTopicName(robot_id_2, "/goal"), 1);
-  //pub_2.publish(p2);
-  ros::Rate loop_rate(0.5);
-  //while (ros::ok())
-  //{
-  //ros::Duration(2).sleep();
+  ros::Publisher pub_2 = nh_.advertise<geometry_msgs::PoseStamped>(orunav_generic::getRobotTopicName(robot_id_2, "/goal"), 1, latchOn);
+
+  while(pub_1.getNumSubscribers()==0)
+  {
+    ROS_INFO("Waiting to establish connection to robot1");
+    //sleep(10);
+  }
+  ROS_INFO("Connection established to robot1");
   pub_1.publish(p1);
-  ros::Duration(1).sleep(); //sleep for 2 seconds
-  cout<<"Wait over"<<endl;
+  sleep(5);
+  while(pub_2.getNumSubscribers()==0)
+  {
+    ROS_INFO("Waiting to establish connection to robot2");
+    //sleep(10);
+  }
+  ROS_INFO("Connection established to robot2");
   pub_2.publish(p2);
-  ros::Duration(5).sleep();
-  //loop_rate.sleep();
-//}
+
+  while (ros::ok())
+  {
+    sleep(3);
+  }
   return 0;
 }
