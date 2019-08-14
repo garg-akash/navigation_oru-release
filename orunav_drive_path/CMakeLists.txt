@@ -155,6 +155,13 @@ target_link_libraries(orunav_drive_two_path_node
    -lboost_program_options
  )
 
+add_executable(orunav_drive_three_path_node src/orunav_drive_three_path_node.cpp)
+add_dependencies(orunav_drive_three_path_node ${catkin_EXPORTED_TARGETS})
+target_link_libraries(orunav_drive_three_path_node
+   ${catkin_LIBRARIES}
+   -lboost_program_options
+ )
+
 add_executable(orunav_start_at_file src/orunav_start_at_file.cpp)
 add_dependencies(orunav_start_at_file ${catkin_EXPORTED_TARGETS})
 target_link_libraries(orunav_start_at_file

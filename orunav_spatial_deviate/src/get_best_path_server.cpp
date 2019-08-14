@@ -87,20 +87,28 @@ class BestPath {
   
   	  ROS_INFO("Obtained a request for best path");
   	  
-  	  orunav_generic::Path loaded_path_1 = loadPathTextFile("/home/akash/catkin_myoru/path10.txt"); //here we make sure that pathX0.txt in database is undeviated/pure path
-      orunav_generic::Path loaded_path_2 = loadPathTextFile("/home/akash/catkin_myoru/path11.txt");
+  	  orunav_generic::Path loaded_path_1 = loadPathTextFile("/home/akash/catkin_myoru/path11.txt"); //here we make sure that pathXX.txt in database is undeviated/pure path
+      orunav_generic::Path loaded_path_2 = loadPathTextFile("/home/akash/catkin_myoru/path12.txt"); //pathXY.txt is path of robotX deviated wrt robotY
+      orunav_generic::Path loaded_path_3 = loadPathTextFile("/home/akash/catkin_myoru/path13.txt");
       //orunav_generic::Path loaded_path_3 = loadPathTextFile("path12.txt");
-      orunav_generic::Path loaded_path_4 = loadPathTextFile("/home/akash/catkin_myoru/path20.txt"); 
-  	  orunav_generic::Path loaded_path_5 = loadPathTextFile("/home/akash/catkin_myoru/path21.txt");
-      //orunav_generic::Path loaded_path_6 = loadPathTextFile("path22.txt");
+      orunav_generic::Path loaded_path_4 = loadPathTextFile("/home/akash/catkin_myoru/path21.txt"); 
+  	  orunav_generic::Path loaded_path_5 = loadPathTextFile("/home/akash/catkin_myoru/path22.txt");
+      orunav_generic::Path loaded_path_6 = loadPathTextFile("/home/akash/catkin_myoru/path23.txt");
+
+      orunav_generic::Path loaded_path_7 = loadPathTextFile("/home/akash/catkin_myoru/path31.txt"); 
+      orunav_generic::Path loaded_path_8 = loadPathTextFile("/home/akash/catkin_myoru/path32.txt");
+      orunav_generic::Path loaded_path_9 = loadPathTextFile("/home/akash/catkin_myoru/path33.txt");
 
   	  std::vector<orunav_generic::Path> database_path;
   	  database_path.push_back(loaded_path_1);
   	  database_path.push_back(loaded_path_2);
-      //database_path.push_back(loaded_path_3);
+      database_path.push_back(loaded_path_3);
       database_path.push_back(loaded_path_4);
       database_path.push_back(loaded_path_5);
-      //database_path.push_back(loaded_path_6);
+      database_path.push_back(loaded_path_6);
+      database_path.push_back(loaded_path_7);
+      database_path.push_back(loaded_path_8);
+      database_path.push_back(loaded_path_9);
 
   	  ROS_INFO("Database of paths loaded");
   	  cout<<"Size of Database: "<<database_path.size()<<endl;
@@ -143,6 +151,10 @@ class BestPath {
             f_empty = 1;
             //break;
             return true;
+          }
+          cout<<"Execution task vector size is: "<<req.b.size()<<endl;
+          for(int p=0; p<req.b.size(); p++) {
+            cout<<"Execution task vector robotID "<< req.b[p].target.robot_id<<" with pathLength "<<orunav_conversions::createPathFromPathMsg(req.b[p].path).sizePath()<<endl;
           }
   	  	  total_olp.push_back(cal_net_olp(i, database_path.at(i), req.b)); 
   	  	}
