@@ -175,6 +175,12 @@ add_dependencies(pub_goal ${catkin_EXPORTED_TARGETS})
 target_link_libraries(pub_goal
    ${catkin_LIBRARIES}
  )
+
+add_executable(time_goal src/time_goal.cpp)
+add_dependencies(time_goal ${catkin_EXPORTED_TARGETS})
+target_link_libraries(time_goal
+   ${catkin_LIBRARIES}
+ )
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/orunav_spatial_deviate.cpp
