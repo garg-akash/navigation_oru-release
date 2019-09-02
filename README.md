@@ -229,7 +229,9 @@ Package that acts as an interface to the tracking controller (orunav_mpc) and th
 
 ##### Head on collision test:
 `$ roslaunch coordination_oru_ros newRobotLab.launch`
+
 `$ rosrun orunav_spatial_deviate pub_goal _BPparam:=$(rospack find orunav_spatial_deviate)/BPDatabase --fileName1 path11.txt --fileName2 path22.txt`
+
 Here BPparam is the path to the Database. The last pose (goal pose) of fileName1 is read from the Database folder. It is then published at robot1/goal. Similarly for robot2, the end pose is read from fileName2. In the Database folder pathXX.txt is initial/unmodified path of robotX whereas pathXY.txt is path of robotX spatially adjusted wrt robotY
 
 ## Citations
