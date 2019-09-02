@@ -33,10 +33,12 @@ class BestPath {
 	float b_2 = 0.6;
 	float L = 1.19;
 	float d_rear = L/2; 
+  std::string bestpath_database_dir_;
   //VehicleState vehicle_state_;
 
   public:
   	BestPath(ros::NodeHandle param_nh) {
+      param_nh.param<std::string>("bestpath_database_directory", bestpath_database_dir_, "./BPDatabase/");
 	    service_ = nh_.advertiseService("get_best_path", &BestPath::bestpathCB, this);
 	  }
 
@@ -87,30 +89,19 @@ class BestPath {
   
   	  ROS_INFO("Obtained a request for best path");
   	  
-  	  orunav_generic::Path loaded_path_1 = loadPathTextFile("/home/akash/catkin_myoru/path11.txt"); //here we make sure that pathXX.txt in database is undeviated/pure path
-      orunav_generic::Path loaded_path_2 = loadPathTextFile("/home/akash/catkin_myoru/path12.txt"); //pathXY.txt is path of robotX deviated wrt robotY
-      orunav_generic::Path loaded_path_3 = loadPathTextFile("/home/akash/catkin_myoru/path13.txt");
-      //orunav_generic::Path loaded_path_3 = loadPathTextFile("path12.txt");
-      orunav_generic::Path loaded_path_4 = loadPathTextFile("/home/akash/catkin_myoru/path21.txt"); 
-  	  orunav_generic::Path loaded_path_5 = loadPathTextFile("/home/akash/catkin_myoru/path22.txt");
-      orunav_generic::Path loaded_path_6 = loadPathTextFile("/home/akash/catkin_myoru/path23.txt");
+  	  orunav_generic::Path loaded_path_1 = loadPathTextFile(bestpath_database_dir_ + "path11.txt"); //here we make sure that pathXX.txt in database is undeviated/pure path
+      orunav_generic::Path loaded_path_2 = loadPathTextFile(bestpath_database_dir_ + "path12.txt"); //pathXY.txt is path of robotX deviated wrt robotY
+      orunav_generic::Path loaded_path_3 = loadPathTextFile(bestpath_database_dir_ + "path21.txt"); 
+  	  orunav_generic::Path loaded_path_4 = loadPathTextFile(bestpath_database_dir_ + "path22.txt");
 
-      orunav_generic::Path loaded_path_7 = loadPathTextFile("/home/akash/catkin_myoru/path31.txt"); 
-      orunav_generic::Path loaded_path_8 = loadPathTextFile("/home/akash/catkin_myoru/path32.txt");
-      orunav_generic::Path loaded_path_9 = loadPathTextFile("/home/akash/catkin_myoru/path33.txt");
 
   	  std::vector<orunav_generic::Path> database_path;
   	  database_path.push_back(loaded_path_1);
   	  database_path.push_back(loaded_path_2);
       database_path.push_back(loaded_path_3);
       database_path.push_back(loaded_path_4);
-      database_path.push_back(loaded_path_5);
-      database_path.push_back(loaded_path_6);
-      database_path.push_back(loaded_path_7);
-      database_path.push_back(loaded_path_8);
-      database_path.push_back(loaded_path_9);
 
-  	  ROS_INFO("Database of paths loaded");
+  	  ROS_INFO_STREAM("[Get Best Path] - Database of paths loaded from : " << bestpath_database_dir_ <<endl);
   	  cout<<"Size of Database: "<<database_path.size()<<endl;
       //req.a.start = orunav_conversions::createPoseSteeringMsgFromState2d(vehicle_state_.getCurrentState2d());
       cout<<"Request came for: ("<<req.a.start.pose.position.x<<", "<<req.a.start.pose.position.y<<", "<<tf::getYaw(req.a.start.pose.orientation)<<", "<<req.a.start.steering<<") ";
@@ -185,15 +176,6 @@ class BestPath {
         res.c = ret;
         return true;
       }
-
-      // ret.criticalPoint = req.a.criticalPoint;
-      // ret.criticalRobotID = req.a.criticalRobotID;
-      // ret.releasingPoint = req.a.releasingPoint;
-      // ret.constraints = req.a.constraints;
-      // ret.dts = req.a.dts;
-      // ret.cts = req.a.cts;
-      // ret.update = req.a.update;
-      // ret.abort = req.a.abort;  
   	}
     }
   };
