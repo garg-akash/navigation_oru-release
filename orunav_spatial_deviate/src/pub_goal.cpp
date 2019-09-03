@@ -72,7 +72,7 @@ int main(int argc, char **argv)
   }
   ROS_INFO("Connection established to robot1");
   pub_1.publish(p1);
-  sleep(5);
+  sleep(8);
   while(pub_2.getNumSubscribers()==0)
   {
     ROS_INFO("Waiting to establish connection to robot2");
